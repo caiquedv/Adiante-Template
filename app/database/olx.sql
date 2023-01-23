@@ -1,0 +1,19 @@
+CREATE TABLE categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT,
+    slug TEXT
+);
+
+CREATE TABLE states (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name VARCHAR(2)
+);
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    state VARCHAR(100) REFERENCES states(id),
+    password VARCHAR(100),
+    token VARCHAR(100)
+);

@@ -1,0 +1,24 @@
+<!--[main]-->
+<div class="card">
+    <div class="card-header">
+        <div class="card-title"> {{title}} </div>
+        
+        <div class="header-actions"> <!--classe p botoes de acao a direita-->
+            <div class="btn btn-danger" style="float:right" id="close-modal"> Fechar </div>
+        </div>
+        
+    </div>
+    <div class="card-body">
+      {{body}}
+    </div>
+    <div class="card-footer"> {{footer}} </div>
+</div>
+
+<script>
+$('#close-modal').click( function() {
+    $('[widget="TWindow"]').remove();
+});
+</script>
+
+
+<!--[/main]-->

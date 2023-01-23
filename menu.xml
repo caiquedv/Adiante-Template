@@ -144,9 +144,13 @@
   </menuitem>
   <menuitem label="Testes">
     <menu>
-      <menuitem label="Teste">
-        <action>Teste</action>
+      <menuitem label="Olx Api">
+        <action>OlxApi</action>
         <icon>fas:ad fa-fw</icon>
+      </menuitem>
+      <menuitem label="modal">
+        <action>ModalWindowView</action>
+        <icon>fas:address-card fa-fw</icon>
       </menuitem>
     </menu>
   </menuitem>

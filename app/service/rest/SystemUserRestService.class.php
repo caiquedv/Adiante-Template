@@ -1,4 +1,6 @@
 <?php
+
+use Adianti\Service\AdiantiRecordService;
 /**
  * SystemUser REST service
  */
