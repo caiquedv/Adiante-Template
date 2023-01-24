@@ -199,10 +199,6 @@ RewriteRule ^states/([A-Za-z0-9]*)$ rest.php?class=StatesOlxRestService&method=h
 RewriteRule ^states/([A-Za-z-_0-9]*)/([A-Za-z-_0-9]*)$ rest.php?class=StatesOlxRestService&method=$2&id=$1&%{QUERY_STRING} [NC]
 RewriteRule ^states$ rest.php?class=StatesOlxRestService&method=handle&%{QUERY_STRING} [NC]
 
-RewriteRule ^ad/list/([A-Za-z0-9]*)$ rest.php?class=SystemOlxRestService&method=handle&id=$1&%{QUERY_STRING} [NC]
-RewriteRule ^ad/list/([A-Za-z-_0-9]*)/([A-Za-z-_0-9]*)$ rest.php?class=SystemOlxRestService&method=$2&id=$1&%{QUERY_STRING} [NC]
-RewriteRule ^ad/list$ rest.php?class=SystemOlxRestService&method=handle&%{QUERY_STRING} [NC]
-
 RewriteRule ^user/signup$ rest.php?class=UsersOlxRestService&method=handler&%{QUERY_STRING} [NC]
 RewriteRule ^user/signin$ rest.php?class=UsersOlxRestService&method=handler&%{QUERY_STRING} [NC]
 
@@ -210,3 +206,9 @@ RewriteRule ^user/me/([A-Za-z0-9]*)$ rest.php?class=UsersOlxRestService&method=h
 RewriteRule ^user/me/([A-Za-z-_0-9]*)/([A-Za-z-_0-9]*)$ rest.php?class=SystemOlxRestService&method=$2&id=$1&%{QUERY_STRING} [NC]
 RewriteRule ^user/me$ rest.php?class=UsersOlxRestService&method=handler&%{QUERY_STRING} [NC]
 
+# RewriteRule ^ad/list/([A-Za-z0-9]*)$ rest.php?class=AdsOlxRestService&method=handle&id=$1&%{QUERY_STRING} [NC]
+# RewriteRule ^ad/list/([A-Za-z-_0-9]*)/([A-Za-z-_0-9]*)$ rest.php?class=AdsOlxRestService&method=$2&id=$1&%{QUERY_STRING} [NC]
+
+RewriteRule ^ad/add$ rest.php?class=AdsOlxRestService&method=handle&%{QUERY_STRING} [NC] 
+RewriteRule ^ad/list$ rest.php?class=AdsOlxRestService&method=handle&%{QUERY_STRING} [NC]
+RewriteRule ^ad/([A-Za-z0-9]*)$ rest.php?class=AdsOlxRestService&method=handle&id=$1&%{QUERY_STRING} [NC]
