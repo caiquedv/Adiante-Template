@@ -17,3 +17,16 @@ CREATE TABLE users (
     password VARCHAR(100),
     token VARCHAR(100)
 );
+
+CREATE TABLE ads (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    status BOOLEAN NOT NULL,
+    user_id INTEGER REFERENCES users(id),
+    state INTEGER REFERENCES states(id),
+    title VARCHAR(100),
+    category INTEGER REFERENCES categories(id),
+    price INTEGER,
+    price_negotiable BOOLEAN NOT NULL,
+    description VARCHAR(100),
+    views INTEGER
+);
