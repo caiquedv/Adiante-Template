@@ -2,7 +2,10 @@
 
 use Adianti\Control\TPage;
 use Adianti\Control\TAction;
-use Adianti\Registry\TSession;
+use Adianti\Validator\TEmailValidator;
+use Adianti\Validator\TMaxLengthValidator;
+use Adianti\Validator\TMinLengthValidator;
+use Adianti\Validator\TRequiredValidator;
 use Adianti\Widget\Form\TCombo;
 use Adianti\Widget\Form\TEntry;
 use Adianti\Widget\Form\TLabel;
@@ -10,14 +13,17 @@ use Adianti\Widget\Form\TButton;
 use Adianti\Widget\Form\TPassword;
 use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Container\TNotebook;
+use Adianti\Widget\Container\TVBox;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
 require_once 'request.php';
 
 class OlxApi extends TPage
 {
-    private $form;
-
+    private $signUp;
+    private $signIn;
+    private $update;
+    private $search;
 
     public function __construct()
     {
@@ -34,35 +40,109 @@ class OlxApi extends TPage
         $btnState->setImage('fa:search blue');
         $btnState->addFunction("{ __adianti_load_page('index.php?class=OlxApi&method=getStates'); }");
 
-        //signup
+        //user forms
+        $this->signUp = new BootstrapFormBuilder('signup');
+        $this->signIn = new BootstrapFormBuilder('signin');
+        $this->update = new BootstrapFormBuilder('update');
+        $this->search = new BootstrapFormBuilder('search');
+
+        // html validate
+        $this->signUp->setClientValidation(true);
+        $this->signIn->setClientValidation(true);
+        $this->update->setClientValidation(true);
+        $this->search->setClientValidation(true);
+
+        // entries && validators
+        // // signup
+        $nameUp = new TEntry('name');
+        $emailUp = new TEntry('email');
+        $stateUp = new TCombo('state');
+        $passwordUp = new TPassword('password');
+
+        $nameUp->addValidation('Name up', new TRequiredValidator);
+        $emailUp->addValidation('Email up', new TEmailValidator);
+        $emailUp->addValidation('Email up', new TRequiredValidator);
+        $stateUp->addValidation('State up', new TRequiredValidator);
+        $passwordUp->addValidation('Pass up', new TMinLengthValidator, [4]);
+        $passwordUp->addValidation('Pass up', new TRequiredValidator);
+
+        // // signin
+        $emailIn = new TEntry('email');
+        $passwordIn = new TPassword('password');
+
+        $emailIn->addValidation('Email in', new TEmailValidator);
+        $emailIn->addValidation('Email in', new TRequiredValidator);
+        $passwordIn->addValidation('Pass in', new TMinLengthValidator, [4]);
+        $passwordIn->addValidation('Pass in', new TRequiredValidator);
+
+        // // update
+        $tokenUpdt = new TEntry('token');
+        $nameUpdt = new TEntry('name');
+        $emailUpdt = new TEntry('email');
+        $stateUpdt = new TCombo('state');
+        $passwordUpdt = new TPassword('password');
+
+        $tokenUpdt->addValidation('Token Updt', new TRequiredValidator);
+        $tokenUpdt->addValidation('Token Updt', new TMaxLengthValidator, [32]);
+        $tokenUpdt->addValidation('Token Updt', new TMinLengthValidator, [32]);
+        $nameUpdt->addValidation('Name Updt', new TMinLengthValidator, [4]);
+        $emailUpdt->addValidation('Email Updt', new TEmailValidator);
+        $passwordUpdt->addValidation('Pass up', new TMinLengthValidator, [4]);
+
+        // // search
+        $tokenSearch = new TEntry('token');
+
+        $tokenSearch->addValidation('Token Search', new TRequiredValidator);
+        $tokenSearch->addValidation('Token Search', new TMaxLengthValidator, [32]);
+        $tokenSearch->addValidation('Token Search', new TMinLengthValidator, [32]);
+
         $options = ['1' => 'SP', '2' => 'RJ', '3' => 'MG'];
+        $stateUp->addItems($options);
+        $stateUpdt->addItems($options);
 
-        $this->form = new BootstrapFormBuilder;
-        $token = new TEntry('token');
-        $name = new TEntry('name');
-        $email = new TEntry('email');
-        $state = new TCombo('state');
-        $password = new TPassword('password');
+        // fields
+        // // signUp
+        $this->signUp->addFields([new TLabel('Nome')], [$nameUp]);
+        $this->signUp->addFields([new TLabel('E-mail')], [$emailUp]);
+        $this->signUp->addFields([new TLabel('Estado')], [$stateUp]);
+        $this->signUp->addFields([new TLabel('Senha')], [$passwordUp]);
 
-        $state->addItems($options);
+        // // signIn
+        $this->signIn->addFields([new TLabel('E-mail')], [$emailIn]);
+        $this->signIn->addFields([new TLabel('Senha')], [$passwordIn]);
 
-        $this->form->addFields([new TLabel('Token')], [$token]);
-        $this->form->addFields([new TLabel('Nome')], [$name]);
-        $this->form->addFields([new TLabel('E-mail')], [$email]);
-        $this->form->addFields([new TLabel('Estado')], [$state]);
-        $this->form->addFields([new TLabel('Senha')], [$password]);
+        // // update
+        $this->update->addFields([new TLabel('Token')], [$tokenUpdt]);
+        $this->update->addFields([new TLabel('Nome')], [$nameUpdt]);
+        $this->update->addFields([new TLabel('E-mail')], [$emailUpdt]);
+        $this->update->addFields([new TLabel('Estado')], [$stateUpdt]);
+        $this->update->addFields([new TLabel('Senha')], [$passwordUpdt]);
 
-        $this->form->setData(TSession::getValue(__CLASS__ . '_filter_data'));
+        // // search
+        $this->search->addFields([new TLabel('Token')], [$tokenSearch]);
 
-        $this->form->addAction('Criar', new TAction([$this, 'postUser']), 'fa:paper-plane blue');
-        $this->form->addAction('Atualizar', new TAction([$this, 'putUser']), 'fa:wrench blue');
-        $this->form->addAction('Buscar', new TAction([$this, 'getUser']), 'fa:search blue');
+
+
+        //actions
+        $this->signUp->addAction('Cadastrar', new TAction([$this, 'signUp']), 'fa:paper-plane blue');
+        $this->signIn->addAction('Login', new TAction([$this, 'signIn']), 'fa:paper-plane blue');
+        $this->update->addAction('Atualizar', new TAction([$this, 'putUser']), 'fa:wrench blue');
+        $this->search->addAction('Buscar', new TAction([$this, 'getUser']), 'fa:search blue');
+
+        $vbox = new TVBox;
+        $vbox->style = 'width:100%';
+        $vbox->add($this->signUp);
+        $vbox->add($this->signIn);
+        $vbox->add($this->update);
+        $vbox->add($this->search);
+
+        // ads
 
         $notebook = new TNotebook();
 
         $notebook->appendPage('Categoria', $btnCat);
         $notebook->appendPage('Estado', $btnState);
-        $notebook->appendPage('Usuário', $this->form);
+        $notebook->appendPage('Usuário', $vbox);
         $notebook->appendPage('Ads', '');
 
         parent::add($notebook);
@@ -88,9 +168,9 @@ class OlxApi extends TPage
         new TMessage('info', str_replace(',', '<br>', json_encode($states)));
     }
 
-    public function postUser()
+    public function signUp()
     {
-        $data = $this->form->getData();
+        $data = $this->signUp->getData();
 
         $body = [
             'name' => $data->name,
@@ -103,10 +183,23 @@ class OlxApi extends TPage
 
         new TMessage('info', str_replace(',', '<br>', json_encode($data)));
     }
+    public function signIn()
+    {
+        $data = $this->signIn->getData();
+
+        $body = [
+            'email' => $data->email,
+            'password' => $data->password
+        ];
+        $location = 'http://localhost/adianti/template/user/signin';
+        $data = request($location, 'POST', $body, 'Basic 123');
+
+        new TMessage('info', str_replace(',', '<br>', json_encode($data)));
+    }
 
     public function putUser()
     {
-        $data = $this->form->getData();
+        $data = $this->update->getData();
 
         $location = "http://localhost/adianti/template/user/me?";
         $user = request($location, 'PUT', get_object_vars($data), 'Basic 123');
@@ -116,7 +209,7 @@ class OlxApi extends TPage
 
     public function getUser()
     {
-        $data = $this->form->getData();
+        $data = $this->search->getData();
 
         $location = "http://localhost/adianti/template/user/me?token={$data->token}";
         $user = request($location, 'GET', [], 'Basic 123');

@@ -1,5 +1,5 @@
 <?php
-
+// sem uso (teste)
 use Adianti\Control\TPage;
 use Adianti\Control\TAction;
 use Adianti\Registry\TSession;
