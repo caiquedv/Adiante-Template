@@ -25,4 +25,12 @@ class UserOlxApi extends TRecord
             return $user->data;
         }
     }
+
+    static public function getUser($token)
+    {
+        $user = UserOlxApi::where('token', '=', $token)->first();
+        if ($user) {
+            return $user->data;
+        }
+    }
 }

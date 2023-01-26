@@ -20,13 +20,13 @@ CREATE TABLE users (
 
 CREATE TABLE ads (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    status BOOLEAN NOT NULL,
+    status BOOLEAN ,
     user_id INTEGER REFERENCES users(id),
     state INTEGER REFERENCES states(id),
     title VARCHAR(100),
     category INTEGER REFERENCES categories(id),
     price INTEGER,
-    price_negotiable BOOLEAN NOT NULL,
+    price_negotiable BOOLEAN ,
     description VARCHAR(100),
     views INTEGER
 );

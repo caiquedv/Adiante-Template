@@ -39,7 +39,8 @@ class UsersOlxRestService extends AdiantiRecordService
                 if (isset($param['state']) && $param['state'] != '') $user[0]['state'] = $param['state'];
                 if (isset($param['password']) && $param['password'] != '') $user[0]['password'] = md5($param['password']);
                 
-                return ['user' => $this->genToken($user[0])];
+                // return ['user' => $this->genToken($user[0])];
+                return ['user' => parent::handle($user[0])['token']];
             }
         }
     }
