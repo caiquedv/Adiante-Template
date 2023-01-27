@@ -23,6 +23,10 @@ class AdsOlxRestService extends AdiantiRecordService
         if (isset($param['state']) && $param['state']) {
             array_push($param['filters'], ['state', '=', "{$param['state']}"]);
         }
+
+        // if (isset($param['user_id']) && $param['user_id']) {
+        //     array_push($param['filters'], ['user_id', '=', "{$param['user_id']}"]);
+        // }
         // return $param;
 
         if (isset($param['token']) && $param['token']) {

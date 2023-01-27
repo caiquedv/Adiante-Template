@@ -21,4 +21,18 @@ class AdsOlxApi extends TRecord
         parent::addAttribute('description');
         parent::addAttribute('views');
     }
+
+    static public function getAds($user_id)
+    {
+        $ads = AdsOlxApi::where('user_id', '=', $user_id)->load();
+        $response = [];
+
+        if ($ads) {
+            foreach ($ads as $value => $ad) {
+                $response[] = $ad->toArray();
+            }
+
+            return $response;
+        }
+    }
 }
