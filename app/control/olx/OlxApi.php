@@ -17,6 +17,7 @@ use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Container\TNotebook;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Form\TRadioGroup;
+use Adianti\Widget\Util\TImage;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
 require_once 'request.php';
@@ -132,7 +133,7 @@ class OlxApi extends TPage
         $this->signUp->addAction('Cadastrar', new TAction([$this, 'signUp']), 'fa:paper-plane blue');
         $this->signIn->addAction('Login', new TAction([$this, 'signIn']), 'fa:paper-plane blue');
         $this->update->addAction('Atualizar', new TAction([$this, 'putUser']), 'fa:wrench blue');
-        $this->search->addAction('Buscar', new TAction([$this, 'getUser']), 'fa:search blue');
+        $this->search->addAction('Buscar', new TAction([$this, 'getUser']), 'fa:search blue'); 
 
         $userVbox = new TVBox;
         $userVbox->style = 'width:100%';
@@ -358,7 +359,7 @@ class OlxApi extends TPage
 
         if (isset($param['id']) && $param['id']) $body['filters'] = [['id', '=', $param['id']]];
 
-        $location = "http://localhost/adianti/template/ad/list";
+        $location = "http://localhost/adianti/template/ad/list/{$param['id']}";
         $ads = request($location, 'GET', $body, 'Basic 123');
 
         new TMessage('info', str_replace(',', '<br>', json_encode($ads)));

@@ -24,16 +24,12 @@ class AdsOlxRestService extends AdiantiRecordService
             array_push($param['filters'], ['state', '=', "{$param['state']}"]);
         }
 
-        // if (isset($param['user_id']) && $param['user_id']) {
-        //     array_push($param['filters'], ['user_id', '=', "{$param['user_id']}"]);
-        // }
-        // return $param;
 
         if (isset($param['token']) && $param['token']) {
+
             TTransaction::open(self::DATABASE);
-            
+
             $user =  UserOlxApi::getUser($param['token']);
-            // return $user;
 
             $param['user_id'] = $user['id'];
             $param['state'] = $user['state'];
@@ -41,6 +37,35 @@ class AdsOlxRestService extends AdiantiRecordService
             TTransaction::close();
         }
 
-        return parent::handle($param);
+        if (isset($_FILES['img']) && $_FILES['img']) {
+            $file = $_FILES['img'];
+
+            move_uploaded_file($file['tmp_name'], './app/images/adImages/' . $file['name']);
+
+            $param['img'] = $file['name'];
+        }
+
+        $ad = parent::handle($param);
+
+        // if (isset($ad[1])) {
+            for ($i = 0; $i < count($ad); $i++) {
+                $imgName = $ad[$i]['img'] ?? "default.jpg";
+
+                $ad[$i]['img'] = "http://localhost/adianti/template/app/images/adImages/{$imgName}";
+            }
+        // } 
+
+        return $ad;
+    }
+
+    public function handleWId($param)
+    {
+        $ad = parent::handle($param);
+
+        $imgName = $ad['img'] ?? "default.jpg";
+
+        $ad['img'] = "http://localhost/adianti/template/app/images/adImages/{$imgName}";
+
+        return $ad;
     }
 }

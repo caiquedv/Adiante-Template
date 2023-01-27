@@ -19,6 +19,7 @@ class AdsOlxApi extends TRecord
         parent::addAttribute('price');
         parent::addAttribute('price_negotiable');
         parent::addAttribute('description');
+        parent::addAttribute('img');
         parent::addAttribute('views');
     }
 

@@ -28,5 +28,6 @@ CREATE TABLE ads (
     price INTEGER,
     price_negotiable BOOLEAN ,
     description VARCHAR(100),
+    img VARCHAR(100),
     views INTEGER
 );
