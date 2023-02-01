@@ -1,12 +1,15 @@
 <?php
 
 use Adianti\Database\TRecord;
+use Adianti\Database\TTransaction;
 
 class UserOlxApi extends TRecord
 {
     const TABLENAME = 'users';
     const PRIMARYKEY = 'id';
     const IDPOLICY = 'max'; // {max, serial}
+
+    private $stateObj;
 
     public function __construct($id = NULL)
     {
@@ -17,6 +20,33 @@ class UserOlxApi extends TRecord
         parent::addAttribute('password');
         parent::addAttribute('token');
     }
+
+    public function set_stateObj(StatesOlxApi $object)
+    {
+        $this->stateObj = $object;
+        $this->state = $object->id;
+    }
+
+    public function get_stateObj()
+    {
+        TTransaction::open('olx');
+
+        if (empty($this->stateObj)) {
+            $this->stateObj = new StatesOlxApi($this->state);
+        }
+
+        TTransaction::close();
+
+        return $this->stateObj;
+    }
+
+    // static public function get_state($id = null)
+    // {
+    //     $state = StatesOlxApi::where('id', '=', $id)->first();
+    //     if ($state) {
+    //         return $state->data;
+    //     }
+    // }
 
     static public function doLogin($email)
     {

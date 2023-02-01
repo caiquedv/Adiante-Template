@@ -17,7 +17,6 @@ use Adianti\Widget\Dialog\TMessage;
 use Adianti\Widget\Container\TNotebook;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Form\TRadioGroup;
-use Adianti\Widget\Util\TImage;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
 require_once 'request.php';

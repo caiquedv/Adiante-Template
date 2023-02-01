@@ -212,6 +212,9 @@ RewriteRule ^user/me$ rest.php?class=UsersOlxRestService&method=handler&%{QUERY_
 RewriteRule ^ad/add$ rest.php?class=AdsOlxRestService&method=handler&%{QUERY_STRING} [NC] 
 
 RewriteRule ^ad/list$ rest.php?class=AdsOlxRestService&method=handler&%{QUERY_STRING} [NC]
-RewriteRule ^ad/list/([A-Za-z0-9]*)$ rest.php?class=AdsOlxRestService&method=handle&id=$1&%{QUERY_STRING} [NC]
+
+RewriteRule ^ad/list/([A-Za-z0-9]*)$ rest.php?class=AdsOlxRestService&method=handle&id=$1&%{QUERY_STRING} [NC] # api admin
 
 RewriteRule ^ad/([A-Za-z0-9]*)$ rest.php?class=AdsOlxRestService&method=handleWId&id=$1&%{QUERY_STRING} [NC]
+
+RewriteRule ^ping$ rest.php?class=TestePing&method=ping&%{QUERY_STRING} [NC]

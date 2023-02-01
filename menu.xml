@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu>
+  <menuitem label="Olx">
+    <icon>fas:cube fa-fw</icon>
+    <menu>
+      <menuitem label="Categorias">
+        <action>CategoryList</action>
+        <icon>fas:code fa-fw</icon>
+      </menuitem>
+      <menuitem label="Estados">
+        <action>StateList</action>
+        <icon>fas:code fa-fw</icon>
+      </menuitem>
+      <menuitem label="Usuários">
+        <action>UserList</action>
+        <icon>fas:code fa-fw</icon>
+      </menuitem>
+    </menu>
+  </menuitem>
   <menuitem label="_t{Administration}">
     <icon>fas:home fa-fw</icon>
     <menu>
